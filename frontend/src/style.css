@@ -1,79 +1,83 @@
+:root {
+  --blue: #0db7ed;
+  --dark: #071827;
+  --card: #102a3f;
+  --text: #edf7ff;
+  --muted: #a9c2d6;
+  --green: #38c172;
+}
+
+* { box-sizing: border-box; }
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f7fb;
-  color: #172033;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, var(--dark), #02070d);
+  color: var(--text);
 }
 
-header {
-  background: #0d6efd;
-  color: white;
-  padding: 42px;
+.hero {
+  padding: 56px 32px;
+  background: linear-gradient(90deg, #075985, var(--blue));
 }
 
-header h1 {
-  margin: 10px 0;
-  font-size: 42px;
+.hero h1 {
+  font-size: 48px;
+  margin: 8px 0;
 }
 
 .badge {
   display: inline-block;
-  border: 1px solid rgba(255,255,255,.5);
   padding: 6px 12px;
+  border: 1px solid rgba(255,255,255,.4);
   border-radius: 999px;
 }
 
 main {
-  max-width: 1000px;
-  margin: auto;
-  padding: 30px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px;
 }
 
 button {
-  background: #0d6efd;
+  background: var(--blue);
   color: white;
   border: none;
-  padding: 10px 14px;
-  border-radius: 8px;
+  padding: 11px 16px;
+  border-radius: 10px;
   cursor: pointer;
-  font-weight: bold;
-}
-
-.card,
-.product {
-  background: white;
-  border-radius: 14px;
-  padding: 18px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.08);
-  margin-bottom: 20px;
+  font-weight: 700;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-  margin-top: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
 }
 
-.product h3 {
-  color: #0d6efd;
+.product,
+.card {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 14px 35px rgba(0,0,0,.18);
+  margin-bottom: 24px;
 }
 
-.price {
-  font-weight: bold;
-  color: #198754;
-}
+.product h3 { color: var(--blue); }
+.price { color: var(--green); font-weight: 800; }
 
 pre {
-  background: #101828;
-  color: #d0d5dd;
+  background: #03101b;
   padding: 14px;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: auto;
+  color: var(--muted);
 }
 
 footer {
+  padding: 24px;
   text-align: center;
-  padding: 20px;
-  color: #667085;
+  color: var(--muted);
 }

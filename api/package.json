@@ -1,19 +1,22 @@
 {
-  "name": "trainshop-starter-api",
+  "name": "trainshop-api",
   "version": "1.0.0",
-  "description": "API simple pour apprendre Docker et GitHub Actions",
+  "description": "TrainShop API for DevOps training",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "test": "jest --runInBand",
-    "lint": "echo \"Lint OK\""
+    "lint": "echo \"Lint OK\"",
+    "build": "echo \"Build OK\""
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "pg": "^8.13.1"
+    "ioredis": "^5.4.2",
+    "pg": "^8.13.1",
+    "prom-client": "^15.1.3"
   },
   "devDependencies": {
     "jest": "^29.7.0",

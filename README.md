@@ -1,95 +1,106 @@
-# TrainShop Starter — Projet sans CI
+# TrainShop — Projet DevOps complet
 
-Ce projet est volontairement simple et ne contient pas encore de GitHub Actions.
+Projet pédagogique complet avec :
 
-L'objectif est que les apprenants créent eux-mêmes la CI/CD pendant le TP.
-
-## Stack
-
-- Frontend HTML/CSS/JS
 - API Node.js / Express
+- Frontend HTML/CSS/JS
 - PostgreSQL
-- Docker
-- Docker Compose
+- Redis
+- Nginx reverse proxy
+- Dockerfile API
+- Dockerfile Frontend
+- docker-compose local
+- docker-compose production
+- GitHub Actions CI
+- GitHub Actions build + push Docker Hub
+- Exemple de déploiement SSH
+- Prometheus
+- Grafana
+- Healthchecks
+- Logs structurés
+- Documentation TP
 
-## Architecture
-
-```text
-Navigateur
-   |
-   | http://localhost:8081
-   v
-Frontend HTML/CSS/JS
-   |
-   | http://localhost:3000
-   v
-API Node.js / Express
-   |
-   v
-PostgreSQL
-```
-
-## Lancement
-
-Créer le fichier `.env` :
+## Lancement local
 
 ```bash
 cp .env.example .env
-```
-
-Sur Windows PowerShell :
-
-```powershell
-Copy-Item .env.example .env
-```
-
-Lancer le projet :
-
-```bash
 docker compose up -d --build
 ```
 
-Vérifier :
+## URLs
+
+```text
+Frontend : http://localhost
+API health : http://localhost/api/health
+API products : http://localhost/api/products
+API metrics : http://localhost/api/metrics
+Prometheus : http://localhost:9090
+Grafana : http://localhost:3001
+```
+
+Grafana :
+
+```text
+admin / admin
+```
+
+## Commandes utiles
 
 ```bash
 docker compose ps
-```
-
-Tester l'API :
-
-```bash
-curl http://localhost:3000/health
-curl http://localhost:3000/products
-```
-
-Ouvrir le frontend :
-
-```text
-http://localhost:8081
-```
-
-## Arrêter
-
-```bash
+docker compose logs -f api
+docker compose exec api sh
 docker compose down
-```
-
-Supprimer aussi la base de données :
-
-```bash
 docker compose down -v
+docker system df
 ```
 
-## Objectif du TP CI/CD
+## GitHub Actions
 
-Les apprenants devront créer le dossier :
+Workflows inclus :
 
 ```text
-.github/workflows/
+.github/workflows/ci.yml
+.github/workflows/docker-publish.yml
+.github/workflows/deploy-ssh-example.yml
 ```
 
-Puis ajouter progressivement :
+Secrets GitHub à créer pour Docker Hub :
 
-1. un workflow CI qui lance les tests API ;
-2. un workflow qui vérifie les builds Docker ;
-3. éventuellement un workflow de publication Docker, en bonus.
+```text
+DOCKERHUB_USERNAME
+DOCKERHUB_TOKEN
+```
+
+Secrets optionnels pour déploiement SSH :
+
+```text
+SSH_HOST
+SSH_USER
+SSH_PRIVATE_KEY
+```
+
+## Production
+
+Modifier `.env` :
+
+```env
+API_IMAGE=username/trainshop-api:1.0.0
+FRONTEND_IMAGE=username/trainshop-frontend:1.0.0
+```
+
+Puis lancer :
+
+```bash
+docker compose -f docker-compose.prod.yml --env-file .env up -d
+```
+
+## Rollback
+
+Changer les tags dans `.env`, puis :
+
+```bash
+docker compose -f docker-compose.prod.yml --env-file .env pull
+docker compose -f docker-compose.prod.yml --env-file .env up -d
+docker compose logs -f api
+```

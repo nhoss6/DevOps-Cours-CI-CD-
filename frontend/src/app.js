@@ -1,35 +1,70 @@
-const API_URL = 'http://localhost:3000';
-
 const healthElement = document.querySelector('#health');
 const productsElement = document.querySelector('#products');
+const reloadButton = document.querySelector('#reload');
+const orderButton = document.querySelector('#create-order');
+const orderResult = document.querySelector('#order-result');
 
-document.querySelector('#check-api').addEventListener('click', async () => {
+async function loadHealth() {
   try {
-    const response = await fetch(`${API_URL}/health`);
+    const response = await fetch('/api/health');
     const data = await response.json();
-
     healthElement.textContent = JSON.stringify(data, null, 2);
   } catch (error) {
-    healthElement.textContent = `Erreur : ${error.message}`;
+    healthElement.textContent = `Erreur API: ${error.message}`;
   }
-});
+}
 
-document.querySelector('#load-products').addEventListener('click', async () => {
+function formatPrice(cents) {
+  return `${(cents / 100).toFixed(2)} €`;
+}
+
+async function loadProducts() {
   productsElement.innerHTML = '<p>Chargement...</p>';
 
   try {
-    const response = await fetch(`${API_URL}/products`);
-    const products = await response.json();
+    const response = await fetch('/api/products');
+    const payload = await response.json();
 
-    productsElement.innerHTML = products.map(product => `
+    productsElement.innerHTML = payload.data.map(product => `
       <article class="product">
         <h3>${product.name}</h3>
         <p>${product.description}</p>
-        <p class="price">${(product.price_cents / 100).toFixed(2)} €</p>
+        <p class="price">${formatPrice(product.price_cents)}</p>
         <p>Stock : ${product.stock}</p>
       </article>
     `).join('');
   } catch (error) {
-    productsElement.innerHTML = `<p>Erreur : ${error.message}</p>`;
+    productsElement.innerHTML = `<p>Erreur: ${error.message}</p>`;
   }
+}
+
+async function createOrder() {
+  try {
+    const response = await fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customerName: 'Client DevOps',
+        items: [
+          { productId: 1, quantity: 1 },
+          { productId: 2, quantity: 2 }
+        ]
+      })
+    });
+
+    const data = await response.json();
+    orderResult.textContent = JSON.stringify(data, null, 2);
+  } catch (error) {
+    orderResult.textContent = `Erreur: ${error.message}`;
+  }
+}
+
+reloadButton.addEventListener('click', () => {
+  loadHealth();
+  loadProducts();
 });
+
+orderButton.addEventListener('click', createOrder);
+
+loadHealth();
+loadProducts();

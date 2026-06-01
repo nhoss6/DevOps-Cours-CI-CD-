@@ -1,9 +1,11 @@
-node_modules
-npm-debug.log
-coverage
-.env
-.env.*
 .git
 .github
-tests
+node_modules
+coverage
+dist
+.env
+.env.*
+*.pem
+*.key
+docs
 README.md

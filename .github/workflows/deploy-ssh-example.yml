@@ -1,0 +1,24 @@
+name: Deploy SSH Example
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy on remote Docker server
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Deploy by SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /opt/trainshop
+            docker compose -f docker-compose.prod.yml --env-file .env pull
+            docker compose -f docker-compose.prod.yml --env-file .env up -d
+            docker compose ps
+            curl -f http://localhost/api/health
